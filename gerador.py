@@ -16,11 +16,11 @@ def main(page: ft.Page):
     def gerar_senha(e):
         nonlocal senha_atual
         comprimento = int(slider.value)
-        caracters = ""
+        caracteres = ""
         if upper_switch.value:
-            caracters += string.ascii_uppercase
+            caracteres += string.ascii_uppercase
         if lower_switch.value:
-            caracters += string.ascii_lowercase
+            caracteres += string.ascii_lowercase
         if numbers_switch.value:
             caracteres += string.digits
         if symbols_switch.value:
@@ -28,7 +28,9 @@ def main(page: ft.Page):
 
         if caracteres:
             senha = ''.join(random.choice(caracteres) for _ in range(comprimento))
-            senha_output.value = senhasenha_atual = senha#mostrar o botao de copiar explicito
+            senha_output.value = senha
+            senha_atual = senha
+            # Mostrar o botão de copiar explícito
             copiar_btn.visible = True
         else:
             senha_output.value = "Selecione ao menos um tipo de caractere"
@@ -64,11 +66,17 @@ def main(page: ft.Page):
     )
 
     title_switch_row = ft.Row(
-        alighnment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         vertical_alignment=ft.CrossAxisAlignment.CENTER,
         controls=[
-            ft.Text("Gerador de senhas", size=28, weight="bold"),
-            theme_button
+            # Adicione um container vazio para empurrar o texto e o botão
+            ft.Container(expand=True), 
+            ft.Text("Gerador de Senhas", size=28, weight="bold"),
+            ft.Container(
+                content=theme_button,
+                expand=True, 
+                alignment=ft.alignment.center_right
+            )
         ]
     )
 
@@ -78,11 +86,11 @@ def main(page: ft.Page):
     )
 
     senha_output = ft.TextField(
-        value = "",
-        label = "Senha Gerada",
+        value="",
+        label="Senha Gerada",
         read_only=True,
-        width=280,
-        # bgcolor=ft.Colors.SURFACE_VARIANT
+        width=280
+        # bgcolor=ft.Colors.ON_SURFACE_VARIANT
     )
 
     #campo de texto para exibir feedback quando a senha for copiada
@@ -108,10 +116,10 @@ def main(page: ft.Page):
         label="CARACTERES: {value}"
     )
 
-    upper_switch = ft.Switch(Label="Letras maiusculas")
-    lower_switch = ft.Switch(label="Letras minusculas"), value=True
+    upper_switch = ft.Switch(label="Letras maiusculas")
+    lower_switch = ft.Switch(label="Letras minusculas", value=True)
     numbers_switch = ft.Switch(label="Incluir numeros")
-    symbols_switch = ft.Switch(Label= "Incuir simbolos")
+    symbols_switch = ft.Switch(label= "Incuir simbolos")
 
     preferencias_column = ft.Column(
         [
@@ -121,8 +129,8 @@ def main(page: ft.Page):
             numbers_switch,
             symbols_switch,
         ],
-        alignment=ft.MainAxs=isAlignment.START,
-        horizontal_alignmen=ft.CrossAxisAlignment.START,
+        alignment=ft.MainAxisAlignment.START,
+        horizontal_alignment=ft.CrossAxisAlignment.START,
         spacing=10
     )
 
@@ -151,13 +159,13 @@ def main(page: ft.Page):
                 preferencias_container,
                 gerar_button,
             ],
-            alignment= ft.MainAxisAlignment.START,
+            alignment=ft.MainAxisAlignment.START,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=10,
         )
     )
 
-    ft.app(
-        target=main,
-        assets_dir="assets"
-    )
+ft.app(
+    target=main,
+    assets_dir="assets"
+)
